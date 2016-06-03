@@ -21,9 +21,10 @@ if os.path.exists(os.path.expandvars('%TEMP%')):
         '%s.html' % str(uuid4())
     )
 elif os.path.exists('/tmp/'):
-    TEMP_FILE = os.path.join('/tmp/', '%s.html' % str(uuid4()   ))
+    TEMP_FILE = os.path.join('/tmp/', '%s.html' % str(uuid4()))
 else:
     raise ValueError('Coudn\'t find temp dir to store html file')
+
 
 def main():
     parser = argparse.ArgumentParser(description='Pass in a url')
