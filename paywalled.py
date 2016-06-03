@@ -11,7 +11,6 @@ Author: Austin West
 '''
 import os
 import argparse
-import tempfile
 import webbrowser
 import requests
 from uuid import uuid4
