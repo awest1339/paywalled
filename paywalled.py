@@ -15,6 +15,7 @@ import webbrowser
 import requests
 from uuid import uuid4
 
+
 if os.path.exists(os.path.expandvars('%TEMP%')):
     TEMP_FILE = os.path.join(
         os.path.expandvars('%TEMP%'),
@@ -29,16 +30,24 @@ else:
 def main():
     parser = argparse.ArgumentParser(description='Pass in a url')
     parser.add_argument('url', nargs=1, help='url to open')
+    parser.add_argument('--proxy', nargs=1, help='specify a proxy server to use')
+    parser.add_argument('--no-check-certificate', action='store_false', help='disable SSL verification')
     args = parser.parse_args()
 
-    r = requests.get(args.url[0], verify=False)
+    if args.proxy:
+        proxies = {
+            'http': args.proxy[0],
+            'https': args.proxy[0],
+        }
+        r = requests.get(args.url[0], proxies=proxies, verify=args.no_check_certificate)
+    else:
+        r = requests.get(args.url[0], verify=args.no_check_certificate)
 
     if r.status_code == 200:
         with open(TEMP_FILE, 'w') as file_:
             file_.write(r.content)
 
     webbrowser.open_new_tab('%s%s' % ('file://', TEMP_FILE))
-
 
 if __name__ == '__main__':
     main()
