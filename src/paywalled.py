@@ -17,12 +17,11 @@ from uuid import uuid4
 
 
 if os.path.exists(os.path.expandvars('%TEMP%')):
-    TEMP_FILE = os.path.join(
-        os.path.expandvars('%TEMP%'),
-        '%s.html' % str(uuid4())
+    TEMP_DIR = os.path.join(
+        os.path.expandvars('%TEMP%')
     )
 elif os.path.exists('/tmp/'):
-    TEMP_FILE = os.path.join('/tmp/', '%s.html' % str(uuid4()))
+    TEMP_DIR = os.path.join('/tmp/')
 else:
     raise ValueError('Coudn\'t find temp dir to store html file')
 
@@ -44,10 +43,19 @@ def main():
         r = requests.get(args.url[0], verify=args.no_check_certificate)
 
     if r.status_code == 200:
-        with open(TEMP_FILE, 'w') as file_:
+        filename = args.url[0].split('/')[-1]
+        if filename:
+            full_path = os.path.join(TEMP_DIR, filename)
+        else:
+            full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
+            
+        with open(full_path, 'w') as file_:
             file_.write(r.content)
 
-    webbrowser.open_new_tab('%s%s' % ('file://', TEMP_FILE))
+        webbrowser.open_new_tab('%s%s' % ('file://', full_path))
+        
+    else:
+        print 'Connection failed: %s' % r
 
 if __name__ == '__main__':
     main()
