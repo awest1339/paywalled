@@ -46,6 +46,8 @@ def main():
         filename = args.url[0].split('/')[-1]
         if filename:
             full_path = os.path.join(TEMP_DIR, filename)
+            if not filename.endswith('.html'):
+                filename = filename + '.html'
         else:
             full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
             
