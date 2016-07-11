@@ -8,7 +8,7 @@ proxy = ''
 no_check_certificate = False
 
 
-def make_request(*args):
+def make_request(*args, **kwargs):
     print url
     print proxy
     return True
