@@ -2,7 +2,15 @@
 Downloads paywalled html source to a local temp file, then opens it in the user's default browser. Depending on how the site is paywalled, should bypass the paywall protection.
 
 # Usage
-* python paywalled.py paywalled_url
+* If using the python version of the code in src/:
+    * python paywalled.py paywalled_url
+* If using the windows executable version of the code in dist/:
+    * paywalled.exe paywalled_url
+* To display help message:
+    * python paywalled.py --help
+* If you are behind a network proxy: 
+    * python paywalled.py paywalled_url --proxy <proxy_url>
+    * paywalled.exe paywalled_url --proxy <proxy_url>
 
 # Requirements
 * requests
