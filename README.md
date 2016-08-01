@@ -9,9 +9,8 @@ Downloads paywalled html source to a local temp file, then opens it in the user'
 * To display help message:
 <pre>python paywalled.py --help</pre>
 * If you are behind a network proxy: 
-<pre>python paywalled.py paywalled_url --proxy <proxy_url></pre>
-<pre>paywalled.exe paywalled_url --proxy <proxy_url></pre>
-    
+<pre>python paywalled.py paywalled_url --proxy proxy_url</pre>
+
 # Using the executable in dist/
 * This exe is provided for convenience purposes and may not necessarily kept up to date with the latest code additions.
 
