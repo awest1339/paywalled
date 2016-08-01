@@ -3,14 +3,14 @@ Downloads paywalled html source to a local temp file, then opens it in the user'
 
 # Usage
 * If using the python version of the code in src/:
-    * python paywalled.py paywalled_url
-* If using the windows executable version of the code in dist/:
-    * paywalled.exe paywalled_url
+<pre>python paywalled.py paywalled_url</pre>
+* To use the GUI version, run: <pre>python gui_pay.py</pre>
+* If using the windows executable version of the code in dist/, just enter the url into the GUI that opens.
 * To display help message:
-    * python paywalled.py --help
+<pre>python paywalled.py --help</pre>
 * If you are behind a network proxy: 
-    * python paywalled.py paywalled_url --proxy <proxy_url>
-    * paywalled.exe paywalled_url --proxy <proxy_url>
+<pre>python paywalled.py paywalled_url --proxy <proxy_url></pre>
+<pre>paywalled.exe paywalled_url --proxy <proxy_url></pre>
     
 # Using the executable in dist/
 * This exe is provided for convenience purposes and may not necessarily kept up to date with the latest code additions.
