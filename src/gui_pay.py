@@ -30,10 +30,6 @@ class Form(QDialog):
 
     # Get the web page
     def make_request(self):
-        print ('Get this url: %s' % self.url.text())
-        print 'This is the proxy: %s' % self.proxy.text()
-        print 'This is no-check-cert: %s' % self.no_check_certificate.isChecked()
-        
         web_content = p.get_web_content(self.url.text(), self.proxy.text(), self.no_check_certificate.isChecked())
         full_path = p.write_web_content_to_file(web_content)
         p.open_web_content(full_path)
