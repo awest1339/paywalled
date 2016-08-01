@@ -11,6 +11,9 @@ Downloads paywalled html source to a local temp file, then opens it in the user'
 * If you are behind a network proxy: 
     * python paywalled.py paywalled_url --proxy <proxy_url>
     * paywalled.exe paywalled_url --proxy <proxy_url>
+    
+# Using the executable in dist/
+* This exe is provided for convenience purposes and may not necessarily kept up to date with the latest code additions.
 
 # Requirements
 * requests
