@@ -10,22 +10,26 @@ class Form(QDialog):
 
     def __init__(self, parent=None):
         super(Form, self).__init__(parent)
+
         # Create widgets
         self.url = QLineEdit('Enter url here')
         self.proxy = QLineEdit('Enter proxy here (optional)')
         self.button = QPushButton('Get page')
         self.no_check_certificate = QCheckBox('No Check Certificate')
+
         # Create layout and add widgets
         layout = QVBoxLayout()
-        layout.addWidget(self.url)
-        layout.addWidget(self.proxy)
-        layout.addWidget(self.no_check_certificate)
-        layout.addWidget(self.button)
-        # Set dialog layout
+        form_layout = QFormLayout()
+        form_layout.addRow('URL:', self.url)
+        form_layout.addRow('Proxy:', self.proxy)
+        form_layout.addRow(self.no_check_certificate)
+        form_layout.addWidget(self.button)
+
+        # Set layout
+        layout.addLayout(form_layout)
         self.setLayout(layout)
-        self.setGeometry(300, 300, 600, 300)
+        self.setGeometry(300, 300, 600, 150)
         self.setWindowTitle('Paywalled')
-        # Add button signal to greetings slot
         self.button.clicked.connect(self.make_request)
 
     # Get the web page
