@@ -27,6 +27,11 @@ else:
 
 
 def get_web_content(url, proxy=None, no_check_certificate=False):
+    '''
+    Given a url and optional proxy,
+    download the web content and return the web content
+    as a string
+    '''
     if proxy:
         proxies = {
             'http': proxy,
@@ -44,13 +49,8 @@ def get_web_content(url, proxy=None, no_check_certificate=False):
 
 def write_web_content_to_file(web_content):
     '''
-    filename = url.split('/')[-1]
-    if filename:
-        full_path = os.path.join(TEMP_DIR, filename)
-        if not full_path.endswith('.html'):
-            full_path = full_path + '.html'
-    else:
-        full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
+    Take in a html string and write it out to a html file
+    in the tmp directory
     '''
     full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
     with open(full_path, 'w') as file_:
