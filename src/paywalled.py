@@ -26,7 +26,7 @@ else:
     raise ValueError('Coudn\'t find temp dir to store html file')
 
 
-def get_web_content(url, proxy, no_check_certificate):
+def get_web_content(url, proxy=None, no_check_certificate=False):
     if proxy:
         proxies = {
             'http': proxy,
@@ -69,7 +69,10 @@ def main():
     parser.add_argument('--no-check-certificate', action='store_false', help='disable SSL verification')
     args = parser.parse_args()
     
-    web_content = get_web_content(args.url[0], args.proxy[0], args.no_check_certificate)
+    if args.proxy:
+        web_content = get_web_content(args.url[0], args.proxy[0], args.no_check_certificate)
+    else:
+        web_content = get_web_content(args.url[0], args.no_check_certificate)
 
     full_path = write_web_content_to_file(web_content)
     open_web_content(full_path)
