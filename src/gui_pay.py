@@ -1,57 +1,52 @@
 #!/usr/bin/env python
-from tkinter import *
-from tkinter import ttk
+import sys
+from PySide.QtCore import *
+from PySide.QtGui import *
+
+import paywalled as p
 
 
-url = ''
-proxy = ''
-no_check_certificate = False
+class Form(QDialog):
 
+    def __init__(self, parent=None):
+        super(Form, self).__init__(parent)
 
-def make_request(*args):
-    print url
-    print proxy
-    return True
+        # Create widgets
+        self.url = QLineEdit('Enter url here')
+        self.proxy = QLineEdit('Enter proxy here (optional)')
+        self.button = QPushButton('Get page')
+        self.no_check_certificate = QCheckBox('No Check Certificate')
 
+        # Create layout and add widgets
+        layout = QVBoxLayout()
+        form_layout = QFormLayout()
+        form_layout.addRow('URL:', self.url)
+        form_layout.addRow('Proxy:', self.proxy)
+        form_layout.addRow(self.no_check_certificate)
+        form_layout.addWidget(self.button)
 
-def main():
-    global url
-    global proxy
-    global no_check_certificate
-    
-    root = Tk()
-    root.title("Paywalled GUI Application")
+        # Set layout
+        layout.addLayout(form_layout)
+        self.setLayout(layout)
+        self.setGeometry(300, 300, 600, 150)
+        self.setWindowTitle('Paywalled')
+        self.button.clicked.connect(self.make_request)
 
-    mainframe = ttk.Frame(root, padding="3 3 12 12")
-    mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-    mainframe.columnconfigure(0, weight=1)
-    mainframe.rowconfigure(0, weight=1)
+    # Get the web page
+    def make_request(self):
+        if self.proxy.text() != 'Enter proxy here (optional)':
+            web_content = p.get_web_content(self.url.text(), self.proxy.text(), self.no_check_certificate.isChecked())
+        else:
+            web_content = p.get_web_content(self.url.text(), None, not self.no_check_certificate.isChecked())
+        full_path = p.write_web_content_to_file(web_content)
+        p.open_web_content(full_path)
 
-    """
-    url = ''
-    proxy = ''
-    no_check_certificate = False
-    """
-    ttk.Label(mainframe, text="Enter URL:").grid(column=1, row=1, sticky=W)
-    url_entry = ttk.Entry(mainframe, width=50, textvariable=url)
-    url_entry.grid(column=2, row=1, sticky=(W, E))
-    
-    proxy_entry = ttk.Entry(mainframe, width=50, textvariable=proxy)
-    proxy_entry.grid(column=2, row=2, sticky=(W, E))
-
-    ttk.Label(mainframe, text="Proxy:").grid(column=1, row=2, sticky=W)
-    ttk.Checkbutton(mainframe, text="Disable certificate verification", variable=no_check_certificate).grid(column=2, row=3, sticky=W) 
-
-    ttk.Button(mainframe, text="Open page!", command=make_request).grid(column=3, row=1, sticky=W)
-
-
-    for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
-
-    url_entry.focus()
-    root.bind('<Return>', make_request)
-
-    root.mainloop()
-
-    
+        
 if __name__ == '__main__':
-    main()
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    # Create and show the form
+    form = Form()
+    form.show()
+    # Run the main Qt loop
+    sys.exit(app.exec_())

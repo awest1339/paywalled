@@ -26,36 +26,57 @@ else:
     raise ValueError('Coudn\'t find temp dir to store html file')
 
 
+def get_web_content(url, proxy=None, no_check_certificate=False):
+    if proxy:
+        proxies = {
+            'http': proxy,
+            'https': proxy,
+        }
+        r = requests.get(url, proxies=proxies, verify=no_check_certificate)
+    else:
+        r = requests.get(url, verify=no_check_certificate)
+
+    if r.status_code == 200:
+        return r.content
+        
+    else:
+        raise ValueError('Connection failed: %s' % r)
+
+def write_web_content_to_file(web_content):
+    '''
+    filename = url.split('/')[-1]
+    if filename:
+        full_path = os.path.join(TEMP_DIR, filename)
+        if not full_path.endswith('.html'):
+            full_path = full_path + '.html'
+    else:
+        full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
+    '''
+    full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
+    with open(full_path, 'w') as file_:
+        file_.write(web_content)
+        
+    return full_path
+    
+def open_web_content(full_path):
+    webbrowser.open_new_tab('%s%s' % ('file://', full_path))
+
+    
 def main():
     parser = argparse.ArgumentParser(description='Pass in a url')
     parser.add_argument('url', nargs=1, help='url to open')
     parser.add_argument('--proxy', nargs=1, help='specify a proxy server to use')
     parser.add_argument('--no-check-certificate', action='store_false', help='disable SSL verification')
     args = parser.parse_args()
-
+    
     if args.proxy:
-        proxies = {
-            'http': args.proxy[0],
-            'https': args.proxy[0],
-        }
-        r = requests.get(args.url[0], proxies=proxies, verify=args.no_check_certificate)
+        web_content = get_web_content(args.url[0], args.proxy[0], args.no_check_certificate)
     else:
-        r = requests.get(args.url[0], verify=args.no_check_certificate)
+        web_content = get_web_content(args.url[0], args.no_check_certificate)
 
-    if r.status_code == 200:
-        filename = args.url[0].split('/')[-1]
-        if filename:
-            full_path = os.path.join(TEMP_DIR, filename)
-        else:
-            full_path = os.path.join(TEMP_DIR, str(uuid4()) + '.html')
-            
-        with open(full_path, 'w') as file_:
-            file_.write(r.content)
+    full_path = write_web_content_to_file(web_content)
+    open_web_content(full_path)
 
-        webbrowser.open_new_tab('%s%s' % ('file://', full_path))
-        
-    else:
-        print 'Connection failed: %s' % r
 
 if __name__ == '__main__':
     main()
